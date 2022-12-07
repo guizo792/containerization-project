@@ -6,8 +6,11 @@ ENV MONGO_DB_USERNAME=admin \
 RUN mkdir -p /home/app
 WORKDIR /home/app
 
-COPY ["package.json", "package-lock.json*", "./home/app/"]
+COPY ./exam-backend/package*.json /home/app
 RUN npm install
 
 COPY ./exam-backend /home/app
-CMD [ "node", "/app/server.js" ]
+
+EXPOSE 3000
+
+CMD [ "node", "/home/app/server.js" ]
