@@ -32,7 +32,7 @@ mongoose
       useUnifiedTopology: true,
     }
   )
-  .then(() => console.log("MongoDB successfully connected"))
+  .then(() => console.log(`MongoDB successfully connected`))
   .catch((err) => console.log(err));
 
 const server = http.createServer(app);

@@ -2,19 +2,39 @@ version: "3"
 services:
   mongodb-service:
     image: mongo
+    container_name: mongodb-service
     ports:
       - 27017:27017
+    networks:
+      - mongodb-network
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - mongo-data:/data/db
   frontend:
-    image: guizo792/containerization-exam-frontend:v1.0
+    image: guizo792/containerization-exam-frontend:v1.1
+    container_name: frontend
     ports:
       - 80:80
+    networks:
+      - mongodb-network
   backend:
-    image: guizo792/containerization-exam-backend:v1.0
+    image: guizo792/containerization-exam-backend:v1.1
+    container_name: backend
     ports:
       - 5000:5000
+    networks:
+      - mongodb-network
     environment:
       - MONGO_DB_USERNAME=admin
       - MONGO_DB_PASSWORD=password
+    depends_on:
+      - mongodb-service
+networks:
+  mongodb-network:
+    name: mongodb-network
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: local
