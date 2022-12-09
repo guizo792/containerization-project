@@ -1,0 +1,20 @@
+version: "3"
+services:
+  mongodb-service:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+  frontend:
+    image: guizo792/containerization-exam-frontend:v1.0
+    ports:
+      - 80:80
+  backend:
+    image: guizo792/containerization-exam-backend:v1.0
+    ports:
+      - 5000:5000
+    environment:
+      - MONGO_DB_USERNAME=admin
+      - MONGO_DB_PASSWORD=password
