@@ -1,33 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-deployment
+  name: mongodb-deployment
   namespace: exam
   labels:
-    app: backend
+    app: mongodb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: backend
+      app: mongodb
   template:
     metadata:
       labels:
-        app: backend
+        app: mongodb
     spec:
       containers:
-        - name: backend
-          image: guizo792/containerization-exam-backend:v1.1
+        - name: mongodb-service
+          image: mongo
           ports:
-            - containerPort: 5000
+            - containerPort: 27017
           env:
-            - name: MONGO_DB_USERNAME
+            - name: MONGO_INITDB_ROOT_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: mongodb-secret
                   key: mongo-root-username
-            - name: MONGO_DB_PASSWORD
+            - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mongodb-secret
                   key: mongo-root-password
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/mongo
+      volumes:
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb-pvc

@@ -13,12 +13,14 @@ services:
     volumes:
       - mongo-data:/data/db
   frontend:
-    image: localhost:4000/frontend:1.0
+    image: guizo792/containerization-exam-frontend:v1.1
     container_name: frontend
     ports:
       - 80:80
     networks:
       - mongodb-network
+    depends_on:
+      - backend
   backend:
     image: localhost:4000/backend:1.0
     container_name: backend
