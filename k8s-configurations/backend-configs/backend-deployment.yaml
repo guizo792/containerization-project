@@ -24,10 +24,10 @@ spec:
             - name: MONGO_DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: backend-secret
+                  name: mongodb-secret
                   key: mongo-root-username
             - name: MONGO_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: backend-secret
+                  name: mongodb-secret
                   key: mongo-root-password

@@ -5,8 +5,7 @@ metadata:
   namespace: exam
 spec:
   volumeName: mongodb-pv
-  storageClassName: local-storage
-  volumeMode: Filesystem
+  storageClassName: ""
   accessModes:
     - ReadWriteOnce
   resources:
