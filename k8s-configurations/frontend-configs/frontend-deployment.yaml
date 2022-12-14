@@ -15,18 +15,18 @@ spec:
       labels:
         app: frontend
     spec:
-      initContainers:
-        - name: wait-for-backend
-          image: darthcabs/tiny-tools:1
-          args:
-            - /bin/bash
-            - -c
-            - >
-              set -x;
-              while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://backend:5000/login)" != "200" ]]; do 
-                echo '.'
-                sleep 15;
-              done
+      # initContainers:
+      #   - name: wait-for-backend
+      #     image: darthcabs/tiny-tools:1
+      #     args:
+      #       - /bin/bash
+      #       - -c
+      #       - >
+      #         set -x;
+      #         while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://backend:5000)" != "200" ]]; do
+      #           echo '.'
+      #           sleep 15;
+      #         done
       containers:
         - name: frontend
           image: guizo792/containerization-exam-frontend:v1.1
