@@ -6,7 +6,7 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: backend
@@ -17,17 +17,27 @@ spec:
     spec:
       containers:
         - name: backend
-          image: guizo792/containerization-exam-backend:v1.1
+          image: guizo792/containerization-exam-backend:v1.2
+          imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 5000
-          env:
-            - name: MONGO_DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-secret
-                  key: mongo-root-username
-            - name: MONGO_DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-secret
-                  key: mongo-root-password
+            - name: backend-port
+              containerPort: 5000
+          # livenessProbe:
+          #   httpGet:
+          #     path: /healthCheck
+          #     port: backend-port
+          #   timeoutSeconds: 15
+          #   periodSeconds: 120
+
+          # readinessProbe:
+          #   httpGet:
+          #     port: backend-port
+          #     path: /healthCheck
+          #   timeoutSeconds: 15
+          #   periodSeconds: 13
+
+          # startupProbe:
+          #   tcpSocket:
+          #     port: backend-port
+          #   failureThreshold: 10
+          #   periodSeconds: 10

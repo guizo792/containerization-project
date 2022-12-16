@@ -23,15 +23,13 @@ app.use(cors());
 app.use("/api/", (req, res, next) => {
   next();
 });
-
+// the connection string when using username and password in mongodb-server
+// mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@mongodb-service:27017/exam?authSource=${process.env.MONGO_DB_USERNAME}
 mongoose
-  .connect(
-    `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@mongodb-service:27017/exam?authSource=${process.env.MONGO_DB_USERNAME}`,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect("mongodb://mongodb-service/exam", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log(`MongoDB successfully connected`))
   .catch((err) => console.log(err));
 

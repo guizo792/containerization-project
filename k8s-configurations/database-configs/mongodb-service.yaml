@@ -5,10 +5,8 @@ metadata:
   namespace: exam
 spec:
   selector:
-    app: mongodb-service
-  type: LoadBalancer
+    app: mongodb
   ports:
     - protocol: TCP
       port: 27017
       targetPort: 27017
-      nodePort: 32000

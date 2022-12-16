@@ -6,7 +6,7 @@ metadata:
   labels:
     app: mongodb
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: mongodb
@@ -17,23 +17,32 @@ spec:
     spec:
       containers:
         - name: mongodb-service
-          image: mongo:latest
+          image: mongo
+          imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 27017
-          env:
-            - name: MONGO_INITDB_ROOT_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-secret
-                  key: mongo-root-username
-            - name: MONGO_INITDB_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-secret
-                  key: mongo-root-password
+            - name: mongodb-port
+              containerPort: 27017
           volumeMounts:
             - name: mongodb-data
               mountPath: /data/mongo
+          # livenessProbe:
+          #   tcpSocket:
+          #     port: mongodb-port
+          #   timeoutSeconds: 15
+          #   periodSeconds: 120
+
+          # readinessProbe:
+          #   httpGet:
+          #     port: mongodb-port
+          #     path: /healthCheck
+          #   timeoutSeconds: 15
+          #   periodSeconds: 13
+
+          # startupProbe:
+          #   tcpSocket:
+          #     port: mongodb-port
+          #   failureThreshold: 10
+          #   periodSeconds: 10
       volumes:
         - name: mongodb-data
           persistentVolumeClaim:
