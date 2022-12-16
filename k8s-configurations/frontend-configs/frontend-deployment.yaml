@@ -6,7 +6,7 @@ metadata:
   labels:
     app: frontend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: frontend
@@ -15,20 +15,29 @@ spec:
       labels:
         app: frontend
     spec:
-      # initContainers:
-      #   - name: wait-for-backend
-      #     image: darthcabs/tiny-tools:1
-      #     args:
-      #       - /bin/bash
-      #       - -c
-      #       - >
-      #         set -x;
-      #         while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://backend:5000)" != "200" ]]; do
-      #           echo '.'
-      #           sleep 15;
-      #         done
       containers:
         - name: frontend
           image: guizo792/containerization-exam-frontend:v1.1
+          imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 80
+            - name: frontend-port
+              containerPort: 80
+          # livenessProbe:
+          #   httpGet:
+          #     path: /healthCheck
+          #     port: frontend-port
+          #   timeoutSeconds: 15
+          #   periodSeconds: 120
+
+          # readinessProbe:
+          #   httpGet:
+          #     port: frontend-port
+          #     path: /healthCheck
+          #   timeoutSeconds: 15
+          #   periodSeconds: 13
+
+          # startupProbe:
+          #   tcpSocket:
+          #     port: frontend-port
+          #   failureThreshold: 10
+          #   periodSeconds: 10
